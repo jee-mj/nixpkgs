@@ -1,5 +1,5 @@
 { mkDerivation, lib, fetchpatch, fetchurl, extra-cmake-modules, kdoctools
-, boost, qtwebkit, qtx11extras, shared-mime-info
+, boost, qtx11extras, shared-mime-info
 , breeze-icons, kactivities, karchive, kcodecs, kcompletion, kconfig, kconfigwidgets
 , kcoreaddons, kdbusaddons, kdiagram, kguiaddons, khtml, ki18n
 , kiconthemes, kitemviews, kjobwidgets, kcmutils, kdelibs4support, kio, kross
@@ -56,7 +56,7 @@ mkDerivation rec {
   nativeBuildInputs = [ extra-cmake-modules kdoctools ];
 
   buildInputs = [
-    boost qtwebkit qtx11extras shared-mime-info
+    boost qtx11extras shared-mime-info
     kactivities karchive kcodecs kcompletion kconfig kconfigwidgets kcoreaddons
     kdbusaddons kdiagram kguiaddons khtml ki18n kiconthemes kitemviews
     kjobwidgets kcmutils kdelibs4support kio kross knotifications knotifyconfig kparts
