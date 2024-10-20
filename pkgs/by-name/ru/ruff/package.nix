@@ -8,26 +8,25 @@
   rust-jemalloc-sys,
   ruff-lsp,
   nix-update-script,
-  testers,
-  ruff,
+  versionCheckHook,
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "ruff";
-  version = "0.6.8";
+  version = "0.7.0";
 
   src = fetchFromGitHub {
     owner = "astral-sh";
     repo = "ruff";
     rev = "refs/tags/${version}";
-    hash = "sha256-guRg35waq6w+P8eaXJFwMtROoXU3d3yURGwzG2SIzhc=";
+    hash = "sha256-//ayB5ayYM5FqiSXDDns2tIL+PJ0Osvkp8+MEEL0L+8=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
       "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-      "salsa-0.18.0" = "sha256-zHXLNK6SCiJ3MmT0PMIauA1eolyJ4wfVWxN6wcvmhts=";
+      "salsa-0.18.0" = "sha256-vuLgeaqIL8U+5PUHJaGdovHFapAMGGQ9nPAMJJnxz/o=";
     };
   };
 
@@ -44,10 +43,11 @@ rustPlatform.buildRustPackage rec {
       --zsh <($out/bin/ruff generate-shell-completion zsh)
   '';
 
-  passthru.tests = {
-    inherit ruff-lsp;
+  passthru = {
+    tests = {
+      inherit ruff-lsp;
+    };
     updateScript = nix-update-script { };
-    version = testers.testVersion { package = ruff; };
   };
 
   # Failing on darwin for an unclear reason.
@@ -72,6 +72,12 @@ rustPlatform.buildRustPackage rec {
     "--skip=search_path"
     "--skip=unix::symlink_inside_workspace"
   ];
+
+  nativeInstallCheckInputs = [
+    versionCheckHook
+  ];
+  versionCheckProgramArg = [ "--version" ];
+  doInstallCheck = true;
 
   meta = {
     description = "Extremely fast Python linter";

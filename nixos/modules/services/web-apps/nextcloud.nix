@@ -930,7 +930,10 @@ in {
         nextcloud-setup = let
           c = cfg.config;
           occInstallCmd = let
-            mkExport = { arg, value }: "export ${arg}=${value}";
+            mkExport = { arg, value }: ''
+              ${arg}=${value};
+              export ${arg};
+            '';
             dbpass = {
               arg = "DBPASS";
               value = if c.dbpassFile != null
@@ -1020,7 +1023,7 @@ in {
           '';
           serviceConfig.Type = "oneshot";
           serviceConfig.User = "nextcloud";
-          # On Nextcloud ≥ 26, it is not necessary to patch the database files to prevent
+          # On Nextcloud ≥ 26, it is not necessary to patch the database files to prevent
           # an automatic creation of the database user.
           environment.NC_setup_create_db_user = lib.mkIf (nextcloudGreaterOrEqualThan "26") "false";
         };
